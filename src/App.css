@@ -17,13 +17,40 @@ html {
   font-family: 'Roboto Mono', monospace;
   margin: 64px 0;
   border: 1px solid #ccc;
-  padding: 12px;
 }
 
 .HexViewer__data {
   display: flex;
-  margin: 12px 0;
+  padding: 16px;
   user-select: none;
+}
+
+.HexViewer__selectionInfo {
+  border-top: 1px solid #ccc;
+  padding: 16px;
+  padding-bottom: 8px;
+}
+
+.HexViewer__selectionTableHeader {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.HexViewer__selectionTableRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+.HexViewer__selectionTableRow > div {
+  flex: 1 1;
+  padding: 0 4px;
+}
+
+.HexViewer__selectionTableHeader > div {
+  flex: 1 1;
+  padding: 0 4px;
 }
 
 .Dump {
@@ -45,7 +72,15 @@ html {
   transition: all 0.1s ease-in-out;
 }
 
-.Dump__cell--selected, .Ascii__cell--selected {
+.Dump__cell:hover, .Ascii__cell:hover {
   background-color: #FCE4EC;
+}
+
+.Dump__cell:active, .Ascii__cell:active {
+  background-color: #F48FB1;
+}
+
+.Dump__cell--selected, .Ascii__cell--selected {
+  background-color: #F8BBD0;
   cursor: default;
 }

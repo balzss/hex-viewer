@@ -20,6 +20,17 @@ function App() {
   const [selectionEnd, setSelectionEnd] = useState();
   const [isSelecting, setIsSelecting] = useState(false);
 
+  const handleContextMenu = e => {
+    e.preventDefault();
+    setSelectionStart(null);
+    setSelectionEnd(null);
+  };
+  const handleViewerMouseLeave = e => {
+    if (isSelecting) {
+      setIsSelecting(false);
+    }
+  };
+
   const renderOffset = () => {
     const nLines = Math.ceil(dump.length/lineWidth);
     const lines = [ ...Array(nLines).keys()].map((n, i) => (i * lineWidth).toString(16).padStart(8, '0'));
@@ -45,11 +56,13 @@ function App() {
       }
     };
     const handleCellPress = e => {
+      if (e.button === 2) return;
       setSelectionEnd(null);
       setSelectionStart(selection);
       setIsSelecting(true);
     };
     const handleCellRelease = e => {
+      if (e.button === 2 || !isSelecting) return;
       setSelectionEnd(selection);
       setIsSelecting(false);
     };
@@ -85,11 +98,13 @@ function App() {
       }
     };
     const handleCellPress = e => {
+      if (e.button === 2) return;
       setSelectionEnd(null);
       setSelectionStart(selection);
       setIsSelecting(true);
     };
     const handleCellRelease = e => {
+      if (e.button === 2 || !isSelecting) return;
       setSelectionEnd(selection);
       setIsSelecting(false);
     };
@@ -125,13 +140,31 @@ function App() {
   return (
     <div className="App">
       <div className="HexViewer">
-        <div className="HexViewer__data">
+        <div
+          className="HexViewer__data"
+          onContextMenu={handleContextMenu}
+          onMouseLeave={handleViewerMouseLeave}
+        >
           {renderOffset()}
           {renderDump()}
           {renderAscii()}
         </div>
-        <div>Selection start: {selectionStart}</div>
-        <div>Selection end: {selectionEnd}</div>
+        <div className="HexViewer__selectionInfo">
+          <div className="HexViewer__selectionTableHeader">
+            <div>Label</div>
+            <div>Start</div>
+            <div>End</div>
+            <div>Length</div>
+            <div>Color</div>
+          </div>
+          <div className="HexViewer__selectionTableRow">
+            <div></div>
+            <div>{Math.min(selectionStart, selectionEnd)}</div>
+            <div>{Math.max(selectionStart, selectionEnd)}</div>
+            <div>{(Math.abs(selectionEnd - selectionStart) + 1) || 0}</div>
+            <div>Default</div>
+          </div>
+        </div>
       </div>
     </div>
   );
